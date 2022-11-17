@@ -1,13 +1,17 @@
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
 
-module.exports = () => {
-  mongoose
-    .connect(
-      "mongodb+srv://rohit:Rohit02092001@cluster0.90w9b9y.mongodb.net/crud-operation?retryWrites=true&w=majority",
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    )
-    .then(() => console.log("Connected to Mongodb......"));
+module.exports = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URL, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    });
+
+    console.log(`Mongoose connection:${conn.connection.host}`);
+  } catch (error) {
+    console.log(`Error:${error.message}`);
+    process.exit(1);
+  }
 };
